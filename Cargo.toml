@@ -1,0 +1,16 @@
+[package]
+name = "overdraw"
+version = "0.1.0"
+edition = "2021"
+# build = "build.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+imgui-opengl-renderer = "0.12.1"
+imgui-glfw-rs = "0.4.1"
+imgui = "0.11.0"
+gl = "0.14.0"
+device_query = "2.0.0"
+log = "0.4.21"
+glm = "0.2.3"
