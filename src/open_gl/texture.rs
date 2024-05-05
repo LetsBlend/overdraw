@@ -1,3 +1,4 @@
+use gl::TEXTURE_2D;
 use gl::types::*;
 
 pub struct Texture2D {
@@ -55,6 +56,14 @@ impl Texture2D {
         }
     }
 
+    pub fn clone(&self) -> Self {
+        unsafe {
+            let dest = Texture2D::new(self.width, self.height);
+            gl::CopyImageSubData(self.texture_id, gl::TEXTURE_2D, 0, 0, 0, 0, dest.texture_id, gl::TEXTURE_2D, 0, 0, 0, 0, dest.width as GLsizei, dest.height as GLsizei, 1);
+            dest
+        }
+    }
+
     pub fn clear(&self) {
         unsafe {
             gl::ClearTexImage(self.texture_id, 0, gl::RGBA, gl::FLOAT, std::ptr::null());
@@ -67,5 +76,13 @@ impl Texture2D {
 
     pub fn get_height(&self) -> u32 {
         self.height
+    }
+}
+
+impl Drop for Texture2D {
+    fn drop(&mut self) {
+        unsafe {
+            gl::DeleteTextures(1, &mut self.texture_id);
+        }
     }
 }

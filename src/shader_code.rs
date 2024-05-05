@@ -69,8 +69,8 @@ void main() {
     p1.x * p4.y - p1.y * p4.x < 0 &&
     p2.x * p3.y - p2.y * p3.x < 0 &&
     p3.x * p4.y - p3.y * p4.x > 0)||
-    length(screen_coord - cursor_pos) < brush_size
-    )
+    length(screen_coord - cursor_pos) < brush_size ||
+    length(screen_coord - prev_cursor_pos) < brush_size)
     {
         imageStore(imgOutput, screen_coord, color);
     }

@@ -2,6 +2,7 @@ use glm::Vec4;
 use imgui_glfw_rs::glfw::Window;
 use imgui_glfw_rs::imgui::{Context, EditableColor, im_str, ImGuiWindowFlags, StyleColor, Ui};
 use imgui_glfw_rs::ImguiGLFW;
+use crate::history::History;
 
 pub struct Gui{
     pub imgui: Context,
@@ -32,7 +33,7 @@ impl Gui {
         self.imgui_glfw.draw(frame, p_window);
     }
 
-    pub fn show_color_picker(&mut self, p_window: &mut Window, color: &mut Vec4, first_click: &mut bool) -> bool {
+    pub fn show_gui(&mut self, p_window: &mut Window, color: &mut Vec4, first_click: &mut bool, mut brush_size: &mut i32, history: &mut History) -> bool {
         let frame = self.imgui_glfw.frame(p_window, &mut self.imgui);
 
         let color_edit = EditableColor::Float4(color.as_array_mut());
@@ -48,6 +49,9 @@ impl Gui {
                     is_hovered = true;
                     *first_click = false;
                 }
+
+                frame.drag_int(im_str!("Brush Size"), &mut brush_size).build();
+                frame.slider_int(im_str!("History Size"), &mut history.max_undos, 1, 25).build();
             });
 
 

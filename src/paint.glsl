@@ -4,16 +4,16 @@ layout (local_size_x = 10, local_size_y = 10, local_size_z = 1) in;
 layout(rgba32f, binding = 0) uniform image2D imgOutput;
 uniform ivec2 cursor_pos;
 uniform ivec2 prev_cursor_pos;
-
 // uniform ivec2 screen_size;
 uniform int brush_size;
+
+uniform vec4 color;
 
 void main() {
     //vec2 uv = vec2(0.0, 0.0);
     int minX = min(prev_cursor_pos.x, cursor_pos.x);
     int minY = min(prev_cursor_pos.y, cursor_pos.y);
-    ivec2 offset = ivec2(minX - min(brush_size, minX), minY - min(brush_size, minY));
-    ivec2 screen_coord = ivec2(gl_GlobalInvocationID.xy + offset);
+    ivec2 screen_coord = ivec2(gl_GlobalInvocationID.xy + ivec2(minX - min(brush_size, minX), minY - min(brush_size, minY)));
 
     //uv.x = float(screen_coord.x) / (gl_NumWorkGroups.x * gl_WorkGroupSize.x);
     //uv.y = float(screen_coord.y) / (gl_NumWorkGroups.y * gl_WorkGroupSize.y);
@@ -38,9 +38,9 @@ void main() {
     p1.x * p4.y - p1.y * p4.x < 0 &&
     p2.x * p3.y - p2.y * p3.x < 0 &&
     p3.x * p4.y - p3.y * p4.x > 0)||
-    length(screen_coord - cursor_pos) < brush_size
-    )
+    length(screen_coord - cursor_pos) < brush_size ||
+    length(screen_coord - prev_cursor_pos) < brush_size)
     {
-        imageStore(imgOutput, screen_coord, vec4(1));
+        imageStore(imgOutput, screen_coord, color);
     }
 }
