@@ -1,4 +1,4 @@
-//#![windows_subsystem = "windows"]
+#![windows_subsystem = "windows"]
 // #![cfg(not(debug_assertions), windows_subsystem = "windows")]
 
 // include!(concat!(env!("OUT_DIR"), "/custom_bindings.rs"));
